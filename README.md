@@ -39,23 +39,12 @@ claude mcp add --transport http music-assistant-docker http://localhost:8668/mcp
 ```
 
 #### Claude Desktop
-To connect Claude Desktop, edit your `claude_desktop_config.json` file. It is typically located at:
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+As of this writing, Claude Desktop does not directly support connecting via any transport other than stdio. However, there are many libraries and tools you can check out to bridge between stdio and streamable-http transports:
 
-Add the proxy configuration block to your `"mcpServers"` object:
-
-```json
-{
-  "mcpServers": {
-    "music-assistant-docker": {
-      "type": "http",
-      "url": "http://localhost:8668/mcp"
-    }
-  }
-}
-```
-*Be sure to fully restart Claude Desktop after saving the configuration file!*
+- [mcp-remote](https://www.npmjs.com/package/mcp-remote)
+- [mcp-proxy](https://pypi.org/project/mcp-proxy/)
+- [mcp-http-stdio-bridge](https://www.npmjs.com/package/@depasquale/mcp-http-stdio-bridge)
+- [fastmcp](https://pypi.org/project/fastmcp/) - using create_proxy()
 
 ## Customizing the Port
 Out of the box, the server operates on port `8668`. If you need to change this due to a local conflict, you must update two places:
