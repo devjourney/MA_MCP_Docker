@@ -1,0 +1,12 @@
+services:
+  music-assistant:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: music-assistant-mcp
+    # Automatically loads variables from a file named '.env' in the same directory
+    env_file:
+      - .env
+    ports:
+      - "8668:8668"
+    restart: unless-stopped
