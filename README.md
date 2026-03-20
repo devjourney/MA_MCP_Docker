@@ -28,8 +28,34 @@ docker compose up -d --build
 ```
 
 ### 3. Connect your Client
-By default, the MCP server will listen on `http://localhost:8668`. 
-Configure your MCP-compatible AI agent (such as Claude Desktop) to connect to this endpoint!
+
+Because this setup exposes an HTTP Server-Sent Events (SSE) endpoint via the `streamable-http` transport, you'll use an MCP proxy to bridge the connection for standard stdio clients like Claude Code or Claude Desktop.
+
+#### Claude CLI (Claude Code)
+To add the containerized server to your Claude CLI configuration, use the following command:
+
+```bash
+claude mcp add --transport http music-assistant-docker http://localhost:8668/mcp
+```
+
+#### Claude Desktop
+To connect Claude Desktop, edit your `claude_desktop_config.json` file. It is typically located at:
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+Add the proxy configuration block to your `"mcpServers"` object:
+
+```json
+{
+  "mcpServers": {
+    "music-assistant-docker": {
+      "type": "http",
+      "url": "http://localhost:8668/mcp"
+    }
+  }
+}
+```
+*Be sure to fully restart Claude Desktop after saving the configuration file!*
 
 ## Customizing the Port
 Out of the box, the server operates on port `8668`. If you need to change this due to a local conflict, you must update two places:
